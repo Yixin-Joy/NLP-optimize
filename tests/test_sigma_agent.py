@@ -11,7 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def reviewed_parent_filter_item():
     handoff = json.loads((ROOT / "data/annotations/aa25_266a_gold_draft.json").read_text(encoding="utf-8"))
     candidates = json.loads((ROOT / "data/annotations/aa25_266a_rule_candidates.json").read_text(encoding="utf-8"))
-    return next(item for item in prepare(handoff, candidates) if item["candidate"]["candidate_id"] == "AA25-266A-R003")
+    return next(item for item in prepare(handoff, candidates) if item["candidate"]["candidate_id"] == "AA25-266A-M001-8de1cbe8")
 
 
 def test_unknown_parent_filter_feedback_causes_revision(monkeypatch):

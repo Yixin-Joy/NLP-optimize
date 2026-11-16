@@ -6,7 +6,7 @@
   "case_level_limitations": ["CISA does not provide the original process events for these commands. These judgments compare reported procedures with Sigma conditions; rule execution and event hits remain untested."],
   "items": [
     {
-      "coverage_id": "AA25-266A-C001", "candidate_id": "AA25-266A-R001", "behavior_id": "AA25-266A-G001",
+      "coverage_id": "AA25-266A-C001", "candidate_id": "AA25-266A-M001-502b42de", "behavior_id": "AA25-266A-G001",
       "decision": "matches_procedure",
       "supporting_conditions": ["CISA lists whoami; the rule selects Image ending in whoami.exe or OriginalFileName equal to whoami.exe."],
       "missing_conditions": [],
@@ -15,7 +15,7 @@
       "review_status": "confirmed"
     },
     {
-      "coverage_id": "AA25-266A-C002", "candidate_id": "AA25-266A-R002", "behavior_id": "AA25-266A-G001",
+      "coverage_id": "AA25-266A-C002", "candidate_id": "AA25-266A-M001-c248c896", "behavior_id": "AA25-266A-G001",
       "decision": "does_not_match",
       "supporting_conditions": ["Both the report and the rule involve whoami."],
       "missing_conditions": ["The report lists whoami, while the rule requires the additional -all or /all argument in CommandLine."],
@@ -24,7 +24,7 @@
       "review_status": "confirmed"
     },
     {
-      "coverage_id": "AA25-266A-C003", "candidate_id": "AA25-266A-R003", "behavior_id": "AA25-266A-G001",
+      "coverage_id": "AA25-266A-C003", "candidate_id": "AA25-266A-M001-8de1cbe8", "behavior_id": "AA25-266A-G001",
       "decision": "insufficient_detail",
       "supporting_conditions": ["The rule selects whoami.exe, which corresponds to the command listed by CISA."],
       "missing_conditions": [],
@@ -33,7 +33,7 @@
       "review_status": "confirmed"
     },
     {
-      "coverage_id": "AA25-266A-C004", "candidate_id": "AA25-266A-R004", "behavior_id": "AA25-266A-G002",
+      "coverage_id": "AA25-266A-C004", "candidate_id": "AA25-266A-M002-a29c1813", "behavior_id": "AA25-266A-G002",
       "decision": "matches_procedure",
       "supporting_conditions": ["CISA lists ipconfig /all; the rule has a CommandLine regex for ipconfig followed by whitespace and /all."],
       "missing_conditions": [],

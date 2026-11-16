@@ -79,6 +79,36 @@
 
 **仍有问题**：当前字段护栏主要处理否定过滤中的 `ParentImage`；复杂 Sigma 条件仍可能误解。R001 解释曾混淆选择器列表中的 OR 与字段内 AND，需下一轮调优。暂未对全部人工判定样本和封存报告做量化评估。
 
+## 2026-11-16 / Sigma 检索与排序优化
+
+**改动**
+
+- `sigma_retrieval.py` 加入行为平台与事件类别推断；已知 Windows 行为不再把 Linux、macOS、Cisco、OpenCanary 等规则列入 Top-K。
+- 词项排序改为 IDF 加权，并分别记录 title、detection、description 和 quote 命中；保留 proxy、network、process、discovery 等领域词。
+- 加入规则状态信号与完整 detection 的必要条件检查。缺失必需参数、User、ParentImage，或可能被 negative filter 排除的规则会降权。
+- `candidate_id` 从排序编号改为 `mapping_id + rule_id 前缀`，重新排序不再破坏下游引用。
+- 新增 `tools/evaluate_sigma_retrieval.py`，计算 Recall@1/3/5/10、MRR、平均排名、错误平台候选和候选 ID 稳定性。
+
+**验证**
+
+- 同一 AA25-266A `case_handoff`、同一 SigmaHQ commit、同一每映射 Top-10 预算。
+- Recall@1 从 0.25 提升到 0.50；Recall@3 从 0.25 提升到 0.50；Recall@5 从 0.25 提升到 0.75；Recall@10 保持 1.00。
+- MRR 从 0.3385 提升到 0.5875；平均正确规则排名从 6.75 降到 4.00。
+- Top-10 错误平台候选从 7 个降到 0；候选 ID 稳定性从 0% 提升到 100%。
+- `AA25-266A-G001` 的 Local Accounts Discovery 从第 10 名升到第 1；`AA25-266A-G002` 的 Suspicious Network Command 保持第 1；`Whoami.EXE Execution Anomaly` 从第 9 升至第 4。
+
+**证据**
+
+- `artifacts/runs/sigma_retrieval_baseline.json`
+- `artifacts/runs/sigma_retrieval_optimized.json`
+- `artifacts/runs/sigma_retrieval_comparison.json`
+
+**仍有问题**
+
+- 人工候选只覆盖 4 条规则，Recall@10 已达上限，不能据此计算 precision 或总体准确率。
+- `whoami /all` 因缺少必需参数被降到第 10；它仍作为需覆盖分析的候选保留，不应在检索阶段直接删除。
+- 条件降权是保守启发式，不等同于完整 Sigma 语义求值；最终覆盖判断仍需确定性三值逻辑或人工复核。
+
 ## 每次新改动的记录格式
 
 ```text

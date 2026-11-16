@@ -7,7 +7,7 @@
 从项目根目录运行，先确保本机 Ollama 已启动且有 `qwen3:4b`：
 
 ```powershell
-python sigma_agent.py data/annotations/aa25_266a_gold_draft.json data/annotations/aa25_266a_rule_candidates.json artifacts/runs/sigma-agent/coverage-r003.json --candidate-id AA25-266A-R003 --max-steps 5
+python sigma_agent.py data/annotations/aa25_266a_gold_draft.json data/annotations/aa25_266a_rule_candidates.json artifacts/runs/sigma-agent/coverage-r003.json --candidate-id AA25-266A-M001-8de1cbe8 --max-steps 5
 python validate_contract.py artifacts/runs/sigma-agent/coverage-r003.json --handoff data/annotations/aa25_266a_gold_draft.json --candidates data/annotations/aa25_266a_rule_candidates.json
 ```
 
