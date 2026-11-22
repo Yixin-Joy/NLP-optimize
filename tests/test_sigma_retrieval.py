@@ -4,8 +4,8 @@ from pathlib import Path
 
 import pytest
 
-from sigma_retrieval import index_rules, retrieve
-from validate_contract import validate_contract, validate_links
+from threat2detect.contracts import validate_contract, validate_links
+from threat2detect.sigma.retrieval import index_rules, retrieve
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -18,7 +18,7 @@ def test_retrieval_recalls_reviewed_candidates(monkeypatch):
     handoff = json.loads((ROOT / "data" / "annotations" / "aa25_266a_gold_draft.json").read_text(encoding="utf-8"))
     reviewed = json.loads((ROOT / "data" / "annotations" / "aa25_266a_rule_candidates.json").read_text(encoding="utf-8"))
     index, warnings = index_rules(rules_root)
-    monkeypatch.setattr("sigma_retrieval.index_rules", lambda _root: (index, warnings))
+    monkeypatch.setattr("threat2detect.sigma.retrieval.index_rules", lambda _root: (index, warnings))
     result = retrieve(handoff, rules_root, limit=10)
     validate_contract(result, ROOT / "unused.json")
     validate_links(result, handoff=handoff)
@@ -35,7 +35,7 @@ def test_retrieval_ranks_reviewed_rules_and_excludes_wrong_platform(monkeypatch)
     handoff = json.loads((ROOT / "data" / "annotations" / "aa25_266a_gold_draft.json").read_text(encoding="utf-8"))
     reviewed = json.loads((ROOT / "data" / "annotations" / "aa25_266a_rule_candidates.json").read_text(encoding="utf-8"))
     index, warnings = index_rules(rules_root)
-    monkeypatch.setattr("sigma_retrieval.index_rules", lambda _root: (index, warnings))
+    monkeypatch.setattr("threat2detect.sigma.retrieval.index_rules", lambda _root: (index, warnings))
     result = retrieve(handoff, rules_root, limit=10)
 
     expected = {(row["behavior_id"], row["rule_id"]) for row in reviewed["items"]}

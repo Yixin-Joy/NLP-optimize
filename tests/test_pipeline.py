@@ -3,9 +3,9 @@ from pathlib import Path
 
 import pytest
 
-from pipeline import prediction_to_handoff
-from sigma_coverage import guard_decision
-from validate_contract import validate_contract
+from threat2detect.contracts import validate_contract
+from threat2detect.pipeline import prediction_to_handoff
+from threat2detect.sigma.coverage import guard_decision
 
 
 ROOT = Path(__file__).resolve().parents[1]

@@ -1,8 +1,8 @@
 import json
 from pathlib import Path
 
-from sigma_agent import analyze_candidate, unresolved_filter_fields
-from sigma_coverage import prepare
+from threat2detect.sigma.agent import analyze_candidate, unresolved_filter_fields
+from threat2detect.sigma.coverage import prepare
 
 
 ROOT = Path(__file__).resolve().parents[1]

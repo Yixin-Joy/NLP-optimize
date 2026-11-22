@@ -1,7 +1,6 @@
 """Validate Threat2Detect v1.0 module handoff JSON files.
 
-Usage: python validate_contract.py data/annotations/aa25_266a_gold_draft.json
-Requires jsonschema (`python -m pip install jsonschema`).
+Usage: python -m threat2detect.contracts data/annotations/aa25_266a_gold_draft.json
 """
 
 from __future__ import annotations
@@ -13,8 +12,10 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator
 
+from . import PROJECT_ROOT
 
-ROOT = Path(__file__).parent
+
+ROOT = PROJECT_ROOT
 ID = {"type": "string", "minLength": 1}
 TEXT = {"type": "string"}
 HASH = {"type": "string", "pattern": "^[0-9a-f]{64}$"}

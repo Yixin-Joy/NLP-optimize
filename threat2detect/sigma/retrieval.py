@@ -16,8 +16,10 @@ from pathlib import Path
 
 import yaml
 
+from .. import PROJECT_ROOT
 
-ROOT = Path(__file__).resolve().parent
+
+ROOT = PROJECT_ROOT
 DEFAULT_RULES = ROOT / "data" / "sigma"
 TOKEN = re.compile(r"[a-z0-9]{3,}")
 FIELD = re.compile(r"^[A-Za-z][A-Za-z0-9_]*(?:\|.*)?$")

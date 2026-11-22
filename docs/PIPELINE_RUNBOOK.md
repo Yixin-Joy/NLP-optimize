@@ -1,13 +1,13 @@
 # 三段流水线：固定接口串联
 
-从项目根目录运行。统一入口是 `pipeline.py`，依次产生 `case_handoff`、`rule_candidates`、`coverage_assessments`、`normalized_events`、`rule_tests`、`case_result`。每段生成后按 `docs/INTERFACE_CONTRACT.md` 校验，汇总保留候选 ID、行为 ID、数据集 ID 和命中事件 ID。
+从项目根目录运行。统一入口是 `threat2detect/pipeline.py`，依次产生 `case_handoff`、`rule_candidates`、`coverage_assessments`、`normalized_events`、`rule_tests`、`case_result`。每段生成后按 `docs/INTERFACE_CONTRACT.md` 校验，汇总保留候选 ID、行为 ID、数据集 ID 和命中事件 ID。
 
 ## 使用已复核案例演示
 
 先按 `docs/OFFLINE_SIGMA_RUNBOOK.md` 生成一次 `artifacts/runs/otrf_lsass_normalized.json`，然后运行：
 
 ```powershell
-python pipeline.py --handoff data/annotations/aa25_266a_gold_draft.json --events artifacts/runs/otrf_lsass_normalized.json --output-dir artifacts/runs/pipeline-demo --limit 1 --max-coverage 1 --max-rules 1
+python -m threat2detect.pipeline --handoff data/annotations/aa25_266a_gold_draft.json --events artifacts/runs/otrf_lsass_normalized.json --output-dir artifacts/runs/pipeline-demo --limit 1 --max-coverage 1 --max-rules 1
 ```
 
 需要本机 Ollama 的 `qwen3:4b`。`--limit` 限制每条映射召回的候选数；`--max-coverage` 限制模型条件对照数；`--max-rules` 限制离线执行数。未处理的候选在 `case_result.items` 中保留 `null`，不能读成未覆盖或规则未命中。`--skip-coverage` 可在无 Ollama 时检查数据接口，输出会明确记载条件对照未做。
@@ -19,10 +19,10 @@ python pipeline.py --handoff data/annotations/aa25_266a_gold_draft.json --events
 新报告先人工准备去掉官方 ATT&CK 答案的 UTF-8 文本。流水线可直接调用原型 Agent：
 
 ```powershell
-python pipeline.py --report data/reports/cisa-aa25-266a-input.txt --case-id AA25-266A --title "CISA Shares Lessons Learned" --source-url "https://www.cisa.gov/sites/default/files/2025-09/AA25-266A_advisory_cisa_shares_lessons_learned_from_ir_engagement.pdf" --events artifacts/runs/otrf_lsass_normalized.json --output-dir artifacts/runs/pipeline-agent --limit 1 --max-coverage 1 --max-rules 1
+python -m threat2detect.pipeline --report data/reports/cisa-aa25-266a-input.txt --case-id AA25-266A --title "CISA Shares Lessons Learned" --source-url "https://www.cisa.gov/sites/default/files/2025-09/AA25-266A_advisory_cisa_shares_lessons_learned_from_ir_engagement.pdf" --events artifacts/runs/otrf_lsass_normalized.json --output-dir artifacts/runs/pipeline-agent --limit 1 --max-coverage 1 --max-rules 1
 ```
 
-已有 `agent_poc.py` 预测时，追加 `--prediction <预测文件>` 可免去重新调用模型。适配器校验报告与 ATT&CK 目录哈希、原文引句位置及技术 ID，再把嵌套的实验输出拆为契约中的 `behaviors[]` 和 `mappings[]`。Agent 结果始终为 `draft`，可进入下游演示，不能伪装成人工确认。现有 A 原型每个行为只给一条 ATT&CK 映射；要支持一对多，需改进 A 的输出。
+已有 `threat2detect/report_agent.py` 预测时，追加 `--prediction <预测文件>` 可免去重新调用模型。适配器校验报告与 ATT&CK 目录哈希、原文引句位置及技术 ID，再把嵌套的实验输出拆为契约中的 `behaviors[]` 和 `mappings[]`。Agent 结果始终为 `draft`，可进入下游演示，不能伪装成人工确认。现有 A 原型每个行为只给一条 ATT&CK 映射；要支持一对多，需改进 A 的输出。
 
 ## 结果含义
 

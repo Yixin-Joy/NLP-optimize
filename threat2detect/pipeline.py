@@ -1,6 +1,7 @@
 """Connect report mapping, Sigma analysis, and offline event testing via v1.0 JSON contracts.
 
-Run from the repository root. See docs/PIPELINE_RUNBOOK.md for examples.
+Run from the repository root with ``python -m threat2detect.pipeline``.
+See docs/PIPELINE_RUNBOOK.md for examples.
 """
 from __future__ import annotations
 
@@ -9,16 +10,17 @@ import hashlib
 import json
 from pathlib import Path
 
-from agent_poc import analyze, load_catalog
-from normalize_otrf import DEFAULT_SOURCE, normalize
-from run_sigma_offline import run_rule
-from sigma_agent import run as assess_with_agent
-from sigma_coverage import run as assess_coverage
-from sigma_retrieval import DEFAULT_RULES, retrieve
-from validate_contract import validate_contract, validate_links, workspace_path
+from . import PROJECT_ROOT
+from .contracts import validate_contract, validate_links, workspace_path
+from .report_agent import analyze, load_catalog
+from .sigma.agent import run as assess_with_agent
+from .sigma.coverage import run as assess_coverage
+from .sigma.executor import run_rule
+from .sigma.retrieval import DEFAULT_RULES, retrieve
+from .telemetry.otrf import DEFAULT_SOURCE, normalize
 
 
-ROOT = Path(__file__).resolve().parent
+ROOT = PROJECT_ROOT
 
 
 def sha256(path: Path) -> str:

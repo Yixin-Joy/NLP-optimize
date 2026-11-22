@@ -9,7 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from sigma_retrieval import behavior_context, platform_compatible, ruleset_commit
+from threat2detect.sigma.retrieval import behavior_context, platform_compatible, ruleset_commit
 
 
 def _ordered_ranks(result: dict) -> dict[tuple[str, str], int]:
